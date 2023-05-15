@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Detail</title>
+    <script src="/javascripts/jquery-3.6.4.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <% include ../partial/header %>
+    <section class="text-gray-600 body-font overflow-hidden">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="lg:w-4/5 mx-auto flex flex-wrap">
+            <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+              <h2 class="text-lg title-font text-gray-500 tracking-widest">Author:<%= post.author.name %></h2>
+              <h1 class="text-gray-900 text-3xl title-font font-medium mb-4"><%= post.title %></h1>
+              <div class="flex mb-4">
+                <h1 class="text-gray-900 text-3xl title-font font-small mb-4"><%= post.content %></h1>
+              </div>
+              <div class="flex border-t border-gray-200 py-2">
+                <span class="text-gray-500">Created</span>
+                <span class="ml-auto text-gray-900 text-sm"><%= post.created %></span>
+              </div>
+              <div class="flex border-t border-gray-200 py-2">
+                <span class="text-gray-500">Updated</span>
+                <span class="ml-auto text-gray-900 text-sm"><%= post.updated %></span>
+              </div>
+              <br><br>
+              <div class="flex">
+                <span><a href="/user/postupdate/<%= post._id %>"><button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Update</button></a></span>
+                <a href="/user/postdelete/<%= post._id %>"><button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" style="margin-left:30px">Delete</button></a></span>
+              </div>
+            </div>
+            <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="<%= post.image %>">
+          </div>
+        </div>
+        <hr><br>
+        <h2 class="text-xl title-font text-black tracking-widest">Comments and Reply</h2><br>
+        <div style="width:600px; display:inline-block">
+            <% for(var i=0; i < comments.length; i++){%>
+            
+                <div>
+                <div>
+                    <h4><%= comments[i].commenter.name %></h4>
+                    <p><%= comments[i].comment %></p>
+               </div>
+        
+                <div style="text-align:end">
+                    <%if(comments[i].reply){%>
+                    <h4><%= post.author.name %></h4>
+                    <p><%= comments[i].reply %>  </p>
+                    <%}else{%>
+                        <div style="margin-left: 100px">
+                            <textarea id="replyContent" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your reply..."></textarea><br>
+                             <button type="button" id="reply" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3 mr-0.50 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reply</button>
+                        </div>
+                    <%}%>
+                </div>
+            <%}%>
+        </div>
+        </div> 
+      </section>
+    <!-- <div>
+    <h1>Post Detail</h1>
+    <h2><%= post.title %></h2>
+    <img src="<%= post.image %>" alt="" width="300" height="200">
+    <h4><%= post.author.name %></h4>
+    <p>Created: <%= post.created %></p>
+    <p>Updated: <%= post.updated %></p>
+    <p><%= post.content %></p>
+    <a href="/user/postupdate/<%= post._id %>"><button>Update</button></a>
+    <a href="/user/postdelete/<%= post._id %>"><button>Delete</button></a>
+    </div>
+    <div style="width:600px; display:inline-block">
+    <div>
+        <% for(var i=0; i < comments.length; i++){%>
+        <div>
+            <h4><%= comments[i].commenter.name %></h4>
+            <p><%= comments[i].comment %></p>
+       </div>
+
+        <div style="text-align:end">
+            <%if(comments[i].reply){%>
+            <h4><%= post.author.name %></h4>
+            <p><%= comments[i].reply %>  </p>
+            <%}else{%>
+                <div style="margin-left: 100px">
+                    <textarea name="" id="replyContent" cols="30" rows="10"></textarea>
+                    <button style="width:400px" id="reply">Reply</button>
+                </div>
+            <%}%>
+        </div>
+    <%}%>
+</div>
+</div> -->
+</body>
+<script>
+    $("#reply").click(function(){
+        console.log("click")
+        const data = {pid:"<%= post._id %>",reply:$("#replyContent").val()};
+        $.ajax("/user/givereply",{
+            method:"POST",
+            data: data,
+            success: function(result){
+             if(result.status){
+                location.reload();
+             }else{
+                alert("Somethings was wrong...");
+             }
+            }
+        })
+    })
+</script>
+</html>

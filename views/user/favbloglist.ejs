@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .card{
+      width:480px;
+      height: 400px;
+      background-color:aqua;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    button{
+      width: 350px;
+      margin-left: 25px;
+      height: 30px;
+      border-radius: 5px;
+      background-color:azure;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <% include ../partial/header %>
+    <h1 style="text-align:center">Fav Blog List</h1>
+    <% for(var i=0; i < posts.length; i++){%>
+     <div class="card">
+        <img src="<%= posts[i].image %>" width="480px" height="270" alt="">
+        <h4><%= posts[i].author.name %></h4>
+        <p><%= posts[i].created %></p>
+        <a href="/postdetail/<%= posts[i]._id %>">
+        <button>
+          See More
+        </button>
+      </a>
+    </div>
+  <%}%>
+  </body>
+</html>
