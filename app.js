@@ -30,7 +30,7 @@ app.use(
 );
 
 
-mongoose.connect("mongodb://127.0.0.1/blogger005");
+mongoose.connect("mongodb+srv://tora:guu3092004@blogger005.zgpmmwn.mongodb.net/?retryWrites=true&w=majority");
 const db = mongoose.connection;
 db.on("error",console.error.bind("Mongodb connection error at blogger005"));
 
