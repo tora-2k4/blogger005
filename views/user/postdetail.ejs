@@ -53,8 +53,8 @@
                     <p><%= comments[i].reply %>  </p>
                     <%}else{%>
                         <div style="margin-left: 100px">
-                            <textarea id="replyContent" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your reply..."></textarea><br>
-                             <button type="button" id="reply" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3 mr-0.50 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reply</button>
+                            <textarea id="replyContent<%= i %>" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your reply..."></textarea><br>
+                             <button type="button" onclick="reply('<%= comments[i]._id %>','<%= i %>')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3 mr-0.50 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reply</button>
                         </div>
                     <%}%>
                 </div>
@@ -97,20 +97,19 @@
 </div> -->
 </body>
 <script>
-    $("#reply").click(function(){
-        console.log("click")
-        const data = {pid:"<%= post._id %>",reply:$("#replyContent").val()};
-        $.ajax("/user/givereply",{
-            method:"POST",
-            data: data,
-            success: function(result){
-             if(result.status){
-                location.reload();
-             }else{
-                alert("Somethings was wrong...");
-             }
-            }
-        })
-    })
+    function reply(cid,idx){
+      const data ={cid:cid,reply:$("replyContent"+idx).val()};
+      $.ajax("/user/givereply",{
+        method:"POST",
+        data:data,
+        success:function(result){
+          if(result.status){
+            location.reload();
+          }else{
+            alert("Something was Wrong");
+          }
+        },
+      });
+    }
 </script>
 </html>
